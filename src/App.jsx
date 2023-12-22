@@ -27,6 +27,12 @@ function Scene({ children, ...props }) {
   const ref = useRef();
   const scroll = useScroll();
   const [hovered, hover] = useState(null);
+  const [selected, select] = useState(null);
+
+  const handleCardClick = (index) => {
+    select(index);
+  };
+
   useFrame((state, delta) => {
     ref.current.rotation.y = -scroll.offset * (Math.PI * 2); // Rotate contents
     state.events.update(); // Raycasts every frame rather than on pointer-move
@@ -38,17 +44,18 @@ function Scene({ children, ...props }) {
     );
     state.camera.lookAt(0, 0, 0);
   });
+  
   return (
     <group ref={ref} {...props}>
       <Cards
-        category="spring"
+        category="COICE 1"
         from={0}
         len={Math.PI / 4}
         onPointerOver={hover}
         onPointerOut={hover}
       />
       <Cards
-        category="summer"
+        category="COICE 2"
         from={Math.PI / 4}
         len={Math.PI / 2}
         position={[0, 0.4, 0]}
@@ -56,17 +63,24 @@ function Scene({ children, ...props }) {
         onPointerOut={hover}
       />
       <Cards
-        category="autumn"
+        category="COICE 3"
         from={Math.PI / 4 + Math.PI / 2}
         len={Math.PI / 2}
         onPointerOver={hover}
         onPointerOut={hover}
       />
       <Cards
-        category="winter"
+        category="COICE 4"
         from={Math.PI * 1.25}
-        len={Math.PI * 2 - Math.PI * 1.25}
+        len={Math.PI * 0.5}
         position={[0, -0.4, 0]}
+        onPointerOver={hover}
+        onPointerOut={hover}
+      />
+      <Cards
+        category="COICE 5"
+        from={Math.PI * 1.75} // Começando de onde COICE 4 termina
+        len={Math.PI * 0.25} // Um quarto do círculo
         onPointerOver={hover}
         onPointerOut={hover}
       />
@@ -99,7 +113,7 @@ function Cards({
       >
         <Text
           font={suspend(inter).default}
-          fontSize={0.25}
+          fontSize={0.5}
           anchorX="center"
           color="black"
         >
@@ -121,7 +135,7 @@ function Cards({
               rotation={[0, Math.PI / 2 + angle, 0]}
               active={hovered !== null}
               hovered={hovered === i}
-              url={`/img${Math.floor(i % 10) + 1}.jpg`}
+              url={`/COICE-1 (${Math.floor(i % 20) + 1}).jpg`}
             />
           );
         }
@@ -172,7 +186,7 @@ function ActiveCard({ hovered, ...props }) {
         ref={ref}
         transparent
         position={[0, 1.5, 0]}
-        url={`/img${Math.floor(hovered % 10) + 1}.jpg`}
+        url={`/COICE-1 (${Math.floor(hovered % 10) + 1}).jpg`}
       >
         <roundedPlaneGeometry
           parameters={{ width: 3.5, height: 1.618 * 3.5 }}
